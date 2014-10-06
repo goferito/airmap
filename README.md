@@ -14,7 +14,7 @@ interface listening on monitor mode.
 3. `npm install`
 
 4. Put a wireless interface on monitor mode:
-  ```sh
+  ```
   # ifconfig wlan0 down
   # iwconfig wlan mode monitor
   ```
