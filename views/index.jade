@@ -1,0 +1,14 @@
+html
+  head
+    title Air Map
+    script(src="/socket.io/socket.io.js")
+    script.
+      var socket = io();
+      socket.on('map', function(data){
+        console.log(data.map);
+      });
+
+  body
+    h1 Hi, this is dog
+
+    #airMap
