@@ -16,7 +16,7 @@ interface listening on monitor mode.
 4. Put a wireless interface on monitor mode:
   ```
   # ifconfig wlan0 down
-  # iwconfig wlan mode monitor
+  # iwconfig wlan0 mode monitor
   ```
 5. `node index.js`
 
