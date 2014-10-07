@@ -1,0 +1,21 @@
+{
+  "name": "airmap",
+  "version": "0.0.1",
+  "description": "Wifi traffic visualization tool",
+  "main": "index.js",
+  "author": "Mr. Goferito",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goferito/airmap"
+  },
+  "bugs": {
+    "url": "https://github.com/goferito/airmap/issues"
+  },
+  "dependencies": {
+    "express": "^4.9.5",
+    "jade": "^1.7.0",
+    "pcap": "^1.2.0",
+    "socket.io": "^1.1.0"
+  }
+}
