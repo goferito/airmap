@@ -2,13 +2,23 @@ html
   head
     title Air Map
     script(src="/socket.io/socket.io.js")
-    link(href='/css/vis.min.css', rel='stylesheet', type='text/css')
-    script(src="/js/vis.min.js")
+    link(href='/libs/dist/vis.min.css', rel='stylesheet', type='text/css')
+    script(src="/libs/dist/vis.min.js")
     style.
       #airMapContainer{
         border: 1px solid #888;
-        width: 400px;
-        height: 400px;
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        width: 68%;
+        height: 98%;
+      }
+      #rawData{
+        width: 30%;
+        height: 85%;
+        float: left;
+        background-color: #444;
+        color: #07E634;
       }
 
 
@@ -16,39 +26,65 @@ html
   body
     h1 Hi, this is dog
 
+    #rawData Listening...
     #airMapContainer
 
     script.
-      var socket = io();
-      socket.on('map', function(data){
-        console.log(data.map);
-      });
 
       // Draw the graph
-      var N = 10
-        , E = 50
-        , g = {
-            nodes: [],
-            edges: []
+      var g = {
+            nodes: new vis.DataSet(),
+            edges: new vis.DataSet()
           }
-        , i
       
-      for(i = 0; i < N; i++){
-        g.nodes.push({
-          id: i,
-          label: 'Node ' + i
-        });
-      }
 
-      for(i = 0; i < E; i++){
-        g.edges.push({
-          from: Math.floor(Math.random() * N) || 0,
-          to: Math.floor(Math.random() * N) || 0
-        });
-      }
+      //-for(var i = 0; i < 20; i++){
+        //-g.edges.add({
+          //-from: names[Math.floor(Math.random() * names.length)],
+          //-to: names[Math.floor(Math.random() * names.length)]
+        //-});
+      //-}
 
-      console.log(g)
       var container = document.getElementById('airMapContainer')
-        , options = {};
+        , rawData = document.getElementById('rawData')
+        , options = {}
+        , map = new vis.Network(container, g, options)
+        , socket = io()
 
-      var map = new vis.Network(container, g, options);
+      socket.on('map', function(data){
+
+        // Display raw data
+        console.log(data.map);
+        //-rawData.innerText = JSON.stringify(data.map, null, '\t');
+
+        for(var bssid in data.map){
+          g.nodes.update({
+            id: bssid,
+            label: bssid
+          });
+
+          // Print source hosts
+          for(var host in data.map[bssid].shosts){
+            g.nodes.update({
+              id: host,
+              label: host
+            });
+            g.edges.update({
+              from: host,
+              to: bssid
+            });
+          }
+
+          // Print destination hosts
+          for(var host in data.map[bssid].dhosts){
+            g.nodes.update({
+              id: host,
+              label: host
+            });
+            g.edges.update({
+              from: bssid,
+              to: host
+            });
+          }
+        }
+      });

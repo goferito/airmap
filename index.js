@@ -7,7 +7,7 @@ var http = require('http')
 
 // TODO take this from argv
 var iface = 'wlan0' 
-  , sendInterval = 1000 * 3
+  , sendInterval = 1000 * 10
 
 var app = express()
   , server = http.createServer(app)
@@ -35,5 +35,5 @@ server.listen(3000, function(){
   console.log("Express listening on port", server.address().port);
 });
 
-//capture.start(io, iface, sendInterval);
+capture.start(io, iface, sendInterval);
 

@@ -42,6 +42,9 @@ var start = function(io, iface, sendInterval){
       , bytes = packet.pcap_header.len
       , time =  packet.pcap_header.time_ms
 
+
+    if(bssid == 'ff:ff:ff:ff:ff:ff') return;
+
     if(!collector[bssid]){
       collector[bssid] = {
         packets: 0,
