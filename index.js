@@ -1,6 +1,7 @@
 
 // Dependencies
 var http = require('http')
+  , path = require('path')
   , express = require('express')
   , socketio = require('socket.io')
 
@@ -14,9 +15,11 @@ var app = express()
   , capture = require('./capture')
 
 
-// Set express server
+// Set up express server
 app.set('views', './views');
 app.set('view engine', 'jade');
+app.use(express.static(path.join(__dirname + '/public')));
+
 app.get('/', function(req, res){
   res.render('index');
 });
@@ -32,5 +35,5 @@ server.listen(3000, function(){
   console.log("Express listening on port", server.address().port);
 });
 
-capture.start(io, iface, sendInterval);
+//capture.start(io, iface, sendInterval);
 

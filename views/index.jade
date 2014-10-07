@@ -2,13 +2,53 @@ html
   head
     title Air Map
     script(src="/socket.io/socket.io.js")
+    link(href='/css/vis.min.css', rel='stylesheet', type='text/css')
+    script(src="/js/vis.min.js")
+    style.
+      #airMapContainer{
+        border: 1px solid #888;
+        width: 400px;
+        height: 400px;
+      }
+
+
+
+  body
+    h1 Hi, this is dog
+
+    #airMapContainer
+
     script.
       var socket = io();
       socket.on('map', function(data){
         console.log(data.map);
       });
 
-  body
-    h1 Hi, this is dog
+      // Draw the graph
+      var N = 10
+        , E = 50
+        , g = {
+            nodes: [],
+            edges: []
+          }
+        , i
+      
+      for(i = 0; i < N; i++){
+        g.nodes.push({
+          id: i,
+          label: 'Node ' + i
+        });
+      }
 
-    #airMap
+      for(i = 0; i < E; i++){
+        g.edges.push({
+          from: Math.floor(Math.random() * N) || 0,
+          to: Math.floor(Math.random() * N) || 0
+        });
+      }
+
+      console.log(g)
+      var container = document.getElementById('airMapContainer')
+        , options = {};
+
+      var map = new vis.Network(container, g, options);
