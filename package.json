@@ -13,6 +13,7 @@
     "url": "https://github.com/goferito/airmap/issues"
   },
   "dependencies": {
+    "commander": "^2.3.0",
     "express": "^4.9.5",
     "jade": "^1.7.0",
     "pcap": "^1.2.0",

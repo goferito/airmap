@@ -4,10 +4,17 @@ var http = require('http')
   , path = require('path')
   , express = require('express')
   , socketio = require('socket.io')
+  , cmd = require('commander')
+  
 
-// TODO take this from argv
-var iface = 'wlan0' 
-  , sendInterval = 1000 * 10
+cmd.option('-i, --iface <name>', 'Interface listening in monitor mode')
+   .option('-s, --send <secs>',  'Interval to send data to the client')
+   .parse(process.argv)
+
+if(!cmd.iface) cmd.help();
+
+var iface = cmd.iface
+  , sendInterval = 1000 * cmd.send
 
 var app = express()
   , server = http.createServer(app)
