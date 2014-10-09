@@ -78,6 +78,7 @@ var start = function(io, iface, sendInterval){
   
 
   // Update clients through socket.io
+  io.emit('map', {map: collector});
   setInterval(function(){
     io.emit('map', {map: collector});
   }, sendInterval);
