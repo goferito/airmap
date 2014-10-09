@@ -47,9 +47,14 @@ html
 
       var container = document.getElementById('airMapContainer')
         , rawData = document.getElementById('rawData')
-        , options = {}
         , map = new vis.Network(container, g, options)
         , socket = io()
+        , options = {
+            //-stabilize: false,
+            //-configurePhysics: true,
+            //-smoothCurves: false
+            physics: {barnesHut: {springConstant: 0.5}}
+          }
 
       socket.on('map', function(data){
 
@@ -60,8 +65,10 @@ html
         for(var bssid in data.map){
           g.nodes.update({
             id: bssid,
-            label: bssid
+            label: bssid,
+            color: 'orange'
           });
+
 
           // Print source hosts
           for(var host in data.map[bssid].shosts){
@@ -70,11 +77,15 @@ html
               label: host
             });
             g.edges.update({
+              id: host + bssid,
               from: host,
-              to: bssid
+              to: bssid,
+              width: Math.ceil(data.map[bssid].shosts[host].bytes / 1000),
+              label: Math.ceil(data.map[bssid].shosts[host].bytes / 1000) + ' kbs',
             });
           }
 
+          continue;
           // Print destination hosts
           for(var host in data.map[bssid].dhosts){
             g.nodes.update({
@@ -82,8 +93,11 @@ html
               label: host
             });
             g.edges.update({
+              id: bssid + host,
               from: bssid,
-              to: host
+              to: host,
+              width: Math.ceil(data.map[bssid].dhosts[host].bytes / 1000),
+              label: Math.ceil(data.map[bssid].dhosts[host].bytes / 1000) + ' kbs',
             });
           }
         }
