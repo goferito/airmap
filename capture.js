@@ -32,9 +32,13 @@ var start = function(io, iface, sendInterval){
     if(!packet) return;
 
     if(!packet.link.ieee802_11Frame){
-      return console.error('ERROR no shost in captured paket. Please, make sure '
-                         + 'the listening interface is in monitor mode.');
+      return console.error( 'ERROR no shost in captured paket. Please, '
+                          + 'make sure the listening interface is in '
+                          + 'monitor mode.');
     }
+
+    // Only data packets. Ignore control and management ones
+    if(packet.link.ieee802_11Frame.type != 2) return;
 
     var shost = packet.link.ieee802_11Frame.shost
       , dhost = packet.link.ieee802_11Frame.dhost
